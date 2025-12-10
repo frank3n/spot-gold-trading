@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useStore } from '@/lib/store';
 import { calculatePortfolioPL } from '@/lib/calculations';
 import { generateId } from '@/lib/utils';
@@ -10,6 +10,7 @@ import type { PortfolioPosition } from '@/lib/types';
 export default function PortfolioPage() {
   const { positions, goldPrice, addPosition, removePosition } = useStore();
   const [showAddForm, setShowAddForm] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   // Form state
   const [type, setType] = useState<'physical' | 'etf' | 'future'>('physical');
@@ -17,6 +18,11 @@ export default function PortfolioPage() {
   const [unit, setUnit] = useState<'oz' | 'gram' | 'shares'>('oz');
   const [avgCostBasis, setAvgCostBasis] = useState('');
   const [notes, setNotes] = useState('');
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
 
   const handleAddPosition = () => {
     if (!quantity || !avgCostBasis) return;
@@ -270,7 +276,7 @@ export default function PortfolioPage() {
                         {pl.unrealizedPLPercent >= 0 ? '+' : ''}{pl.unrealizedPLPercent.toFixed(2)}%
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
-                        {new Date(position.purchaseDate).toLocaleDateString()}
+                        {mounted ? new Date(position.purchaseDate).toLocaleDateString() : '...'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm">
                         <button

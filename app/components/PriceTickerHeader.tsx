@@ -1,13 +1,17 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useStore } from '@/lib/store';
 import { TrendingUp, TrendingDown } from 'lucide-react';
 
 export function PriceTickerHeader() {
   const { goldPrice, updateGoldPrice } = useStore();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+
     // Update price every 5 seconds
     const interval = setInterval(() => {
       updateGoldPrice();
@@ -83,7 +87,7 @@ export function PriceTickerHeader() {
           <div className="text-xs text-gray-500">
             <p>Last Update</p>
             <p className="font-medium text-gray-400">
-              {new Date(goldPrice.timestamp).toLocaleTimeString()}
+              {mounted ? new Date(goldPrice.timestamp).toLocaleTimeString() : '--:--:--'}
             </p>
           </div>
         </div>

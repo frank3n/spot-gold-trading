@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useStore } from '@/lib/store';
 import { generateId } from '@/lib/utils';
 import { Plus, Bell, BellOff, Trash2, CheckCircle } from 'lucide-react';
@@ -9,6 +9,7 @@ import type { PriceAlert } from '@/lib/types';
 export default function AlertsPage() {
   const { alerts, goldPrice, addAlert, removeAlert, toggleAlert } = useStore();
   const [showAddForm, setShowAddForm] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>(() => {
     if (typeof window !== 'undefined' && 'Notification' in window) {
       return Notification.permission;
@@ -19,6 +20,11 @@ export default function AlertsPage() {
   // Form state
   const [condition, setCondition] = useState<'>' | '<'>('<');
   const [value, setValue] = useState('');
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
 
   const requestNotificationPermission = async () => {
     if (typeof window !== 'undefined' && 'Notification' in window) {
@@ -175,7 +181,7 @@ export default function AlertsPage() {
                       ${alert.value.toLocaleString()}
                     </p>
                     <p className="text-sm text-gray-400 mt-1">
-                      Created {new Date(alert.createdAt).toLocaleDateString()}
+                      Created {mounted ? new Date(alert.createdAt).toLocaleDateString() : '...'}
                     </p>
                   </div>
                 </div>
@@ -226,7 +232,7 @@ export default function AlertsPage() {
                       ${alert.value.toLocaleString()}
                     </p>
                     <p className="text-sm text-gray-400 mt-1">
-                      Triggered {alert.triggeredAt ? new Date(alert.triggeredAt).toLocaleString() : 'Unknown'}
+                      Triggered {mounted && alert.triggeredAt ? new Date(alert.triggeredAt).toLocaleString() : '...'}
                     </p>
                   </div>
                 </div>
