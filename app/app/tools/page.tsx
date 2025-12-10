@@ -43,7 +43,7 @@ export default function ToolsPage() {
             <h3 className="font-medium text-white mb-1">Pivot Point Calculator</h3>
             <p className="text-sm">
               Calculate key support and resistance levels for day trading.
-              Enter the previous period's high, low, and close to get pivot point, resistance (R1-R3), and support (S1-S3) levels.
+              Enter the previous period&apos;s high, low, and close to get pivot point, resistance (R1-R3), and support (S1-S3) levels.
             </p>
           </div>
         </div>

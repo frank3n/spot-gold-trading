@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useStore } from '@/lib/store';
 import { generateId } from '@/lib/utils';
 import { Plus, Bell, BellOff, Trash2, CheckCircle } from 'lucide-react';
@@ -9,18 +9,16 @@ import type { PriceAlert } from '@/lib/types';
 export default function AlertsPage() {
   const { alerts, goldPrice, addAlert, removeAlert, toggleAlert } = useStore();
   const [showAddForm, setShowAddForm] = useState(false);
-  const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>('default');
+  const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>(() => {
+    if (typeof window !== 'undefined' && 'Notification' in window) {
+      return Notification.permission;
+    }
+    return 'default';
+  });
 
   // Form state
   const [condition, setCondition] = useState<'>' | '<'>('<');
   const [value, setValue] = useState('');
-
-  useEffect(() => {
-    // Check notification permission
-    if (typeof window !== 'undefined' && 'Notification' in window) {
-      setNotificationPermission(Notification.permission);
-    }
-  }, []);
 
   const requestNotificationPermission = async () => {
     if (typeof window !== 'undefined' && 'Notification' in window) {
@@ -299,7 +297,7 @@ export default function AlertsPage() {
           <Bell className="w-16 h-16 text-gray-700 mx-auto mb-4" />
           <p className="text-gray-400 text-lg">No alerts configured yet</p>
           <p className="text-gray-500 text-sm mt-2">
-            Click "Create Alert" to get notified when gold price reaches your target
+            Click &quot;Create Alert&quot; to get notified when gold price reaches your target
           </p>
         </div>
       )}

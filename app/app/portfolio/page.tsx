@@ -121,7 +121,7 @@ export default function PortfolioPage() {
               </label>
               <select
                 value={type}
-                onChange={(e) => setType(e.target.value as any)}
+                onChange={(e) => setType(e.target.value as 'physical' | 'etf' | 'future')}
                 className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
               >
                 <option value="physical">Physical Gold</option>
@@ -135,7 +135,7 @@ export default function PortfolioPage() {
               </label>
               <select
                 value={unit}
-                onChange={(e) => setUnit(e.target.value as any)}
+                onChange={(e) => setUnit(e.target.value as 'oz' | 'gram' | 'shares')}
                 className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
               >
                 <option value="oz">Ounces (oz)</option>
@@ -235,7 +235,7 @@ export default function PortfolioPage() {
               {positions.length === 0 ? (
                 <tr>
                   <td colSpan={8} className="px-6 py-12 text-center text-gray-500">
-                    No positions yet. Click "Add Position" to start tracking your portfolio.
+                    No positions yet. Click &quot;Add Position&quot; to start tracking your portfolio.
                   </td>
                 </tr>
               ) : (
